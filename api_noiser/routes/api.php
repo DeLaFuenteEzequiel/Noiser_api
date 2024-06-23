@@ -4,6 +4,8 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PublicationsController;
 use App\Http\Controllers\RatingsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+
 
 
 /*
@@ -22,5 +24,6 @@ Route::resource('users', UsersController::class);
 Route::resource('publications', PublicationsController::class);
 Route::resource('ratings', RatingsController::class);
 Route::post('/register', 'App\Http\Controllers\Auth\RegisterController@register');
+Route::post('/login', [LoginController::class, 'login']);
 
 
