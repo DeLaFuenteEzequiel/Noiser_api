@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Publication extends Model
+class Rating extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'user_id', 'media',
+        'user_id', 'publication_id', 'rating', 'comment',
     ];
 
     public function user()
@@ -18,8 +18,8 @@ class Publication extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function ratings()
+    public function publication()
     {
-        return $this->hasMany(Rating::class);
+        return $this->belongsTo(Publication::class);
     }
 }
