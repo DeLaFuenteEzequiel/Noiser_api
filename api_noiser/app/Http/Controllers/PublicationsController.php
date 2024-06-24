@@ -19,13 +19,27 @@ class PublicationsController extends Controller
 
     public function store(Request $request)
     {
-        return Publication::create($request->all());
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'media' => 'nullable',
+        ]);
+
+        return Publication::create($validatedData);
     }
 
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'media' => 'nullable',
+        ]);
+
         $publication = Publication::findOrFail($id);
-        $publication->update($request->all());
+        $publication->update($validatedData);
 
         return $publication;
     }
@@ -35,6 +49,6 @@ class PublicationsController extends Controller
         $publication = Publication::findOrFail($id);
         $publication->delete();
 
-        return 204;
+        return response()->json(null, 204);
     }
 }
