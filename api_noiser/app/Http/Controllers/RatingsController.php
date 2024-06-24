@@ -19,13 +19,27 @@ class RatingsController extends Controller
 
     public function store(Request $request)
     {
-        return Rating::create($request->all());
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'publication_id' => 'required|exists:publications,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string',
+        ]);
+
+        return Rating::create($validatedData);
     }
 
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'user_id' => 'sometimes|required|exists:users,id',
+            'publication_id' => 'sometimes|required|exists:publications,id',
+            'rating' => 'sometimes|required|integer|min:1|max:5',
+            'comment' => 'nullable|string',
+        ]);
+
         $rating = Rating::findOrFail($id);
-        $rating->update($request->all());
+        $rating->update($validatedData);
 
         return $rating;
     }
@@ -35,6 +49,6 @@ class RatingsController extends Controller
         $rating = Rating::findOrFail($id);
         $rating->delete();
 
-        return 204;
+        return response()->json(null, 204);
     }
 }
